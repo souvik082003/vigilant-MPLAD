@@ -1,6 +1,11 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { getDb } from './db.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors());
@@ -213,6 +218,15 @@ app.get('/api/dashboard/risk-trend', async (req, res) => {
     ]);
   } catch (err) { res.status(500).json({error: err.message}); }
 });
+
+// Serve React App in Production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../dist')));
+  
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
+  });
+}
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

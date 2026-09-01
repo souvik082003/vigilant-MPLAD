@@ -1,0 +1,12 @@
+node_modules
+dist
+build
+.env
+.env.local
+.DS_Store
+*.log
+
+# You can choose to ignore the database and data files if you don't want them in github
+# data/database.sqlite
+# data/processed/
+# data/raw/
